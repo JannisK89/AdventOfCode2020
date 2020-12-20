@@ -140,7 +140,7 @@ def ValidateFields(dictionaryList):
 
         if (re.fullmatch(HEIGHT_INCHES_PATTERN, dic['hgt']) and int(dic['hgt'][:2]) in range(59, 76)) or ((re.fullmatch(HEIGHT_CENTIMETERS_PATTERN, dic['hgt']) and int(dic['hgt'][:3]) in range(150, 193))):
             valid += 1
-            continue
+            
 
     return valid
 
