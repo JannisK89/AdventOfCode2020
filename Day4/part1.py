@@ -49,6 +49,7 @@ Count the number of valid passports - those that have all required fields. Treat
 """
 import re
 
+
 def FindValidPassports(file):
     fileInput = open(file, 'r').readlines()
     passports = ['']
@@ -62,9 +63,9 @@ def FindValidPassports(file):
 
         passports[counter] += line.replace('\n', ' ')
 
-    correctPassports = filter(lambda x: (re.match(pattern, x.strip())) , passports)
+    correctPassports = filter(lambda x: len(set(re.findall(pattern, x.strip()))) == 7, passports)
 
-    return len(list(correctPassports))
+    return list(correctPassports)
 
 
-print(FindValidPassports('input.txt'))
+print(len(FindValidPassports('input.txt')))

@@ -5,6 +5,7 @@
 import re
 
 
+# Filter away all passports without the right fields
 def FindValidPassports(file):
     fileInput = open(file, 'r').readlines()
     passports = ['']
@@ -18,11 +19,12 @@ def FindValidPassports(file):
 
         passports[counter] += line.replace('\n', ' ')
 
-    correctPassports = filter(lambda x: len(re.findall(pattern, x.strip())) == 7, passports)
+    correctPassports = filter(lambda x: len(set(re.findall(pattern, x.strip()))) == 7, passports)
 
     return list(correctPassports)
 
 
+# Creates a list of dictionaries for each passport, making field look up easy
 def CreateDictionary(passportList):
     listOfDictionaries = []
     counter = 0
@@ -41,17 +43,17 @@ def CreateDictionary(passportList):
     return listOfDictionaries
 
 
+# Filter away passports with invalid field data
 def ValidateFields(dictionaryList):
 
     EYECOLORS = ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth']
-    PID_PATTERN = '[\d]{9}'
+    PID_PATTERN = '[\\d]{9}'
     HAIR_COLOR_PATTERN = '#[0-9a-f]{6}'
+    HEIGHT_INCHES_PATTERN = '[\\d]{2}in'
+    HEIGHT_CENTIMETERS_PATTERN = '[\\d]{3}cm'
     valid = 0
 
     for dic in dictionaryList:
-
-        # print(dic)
-        #print(f'EYE COLOR: {dic["ecl"]}\nPID: {dic["pid"]}\nEXPIRATION DATE: {dic["eyr"]}\nHAIR COLOR: {dic["hcl"]}\nBIRTH YEAR: {dic["byr"]}\nHEIGHT: {dic["hgt"]}')
 
         if dic['ecl'] not in EYECOLORS:
             continue
@@ -71,17 +73,12 @@ def ValidateFields(dictionaryList):
         if 2010 > int(dic['iyr']) < 2020:
             continue
 
-        if (re.fullmatch('[\d]{2}in', dic['hgt']) and int(dic['hgt'][:2]) in range(59, 76)) or ((re.fullmatch('[\d]{3}cm', dic['hgt']) and int(dic['hgt'][:3]) in range(150, 193))):
+        if (re.fullmatch(HEIGHT_INCHES_PATTERN, dic['hgt']) and int(dic['hgt'][:2]) in range(59, 76)) or ((re.fullmatch(HEIGHT_CENTIMETERS_PATTERN, dic['hgt']) and int(dic['hgt'][:3]) in range(150, 193))):
             valid += 1
             continue
 
     return valid
 
 
-validPassports = FindValidPassports("testinput.txt")
 
-print(f'Found {len(validPassports)} valid passports')
-
-dictOfPassports = CreateDictionary(validPassports)
-
-print(ValidateFields(dictOfPassports))
+print(ValidateFields(CreateDictionary(FindValidPassports("input.txt"))))
