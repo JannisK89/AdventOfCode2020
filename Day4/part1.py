@@ -5,20 +5,22 @@
 import re
 
 
-def findValidPassports(file):
-    fileInput = open(file, 'r').readlines()
-    passports = ['']
-    counter = 0
-    pattern = '(ecl|pid|eyr|hcl|byr|iyr|hgt)'
+def findValidPassports(inputFile):
+    with open(inputFile, 'r') as file:
+        fileInput = file.readlines()
+        passports = ['']
+        counter = 0
+        pattern = '(ecl|pid|eyr|hcl|byr|iyr|hgt)'
 
-    for line in fileInput:
-        if line.replace('\n', '') == '':
-            counter += 1
-            passports.append('')
+        for line in fileInput:
+            if line.replace('\n', '') == '':
+                counter += 1
+                passports.append('')
 
-        passports[counter] += line.replace('\n', ' ')
+            passports[counter] += line.replace('\n', ' ')
 
-    correctPassports = filter(lambda x: len(set(re.findall(pattern, x.strip()))) == 7, passports)
+        correctPassports = filter(lambda x: len(
+            set(re.findall(pattern, x.strip()))) == 7, passports)
 
     return list(correctPassports)
 

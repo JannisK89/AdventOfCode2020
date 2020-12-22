@@ -28,15 +28,15 @@ def findColumn(file):
     return listOfColumns[0]
 
 
-def getSeatIds(file):
+def getSeatIds(inputFile):
+     with open(inputFile, 'r') as file:
+        fileInput = file.readlines()
+        listOfIds = []
 
-    fileInput = open(file, 'r').readlines()
-    listOfIds = []
+        for line in fileInput:
+            listOfIds.append(findRow(line.strip()) * 8 + findColumn(line.strip()))
 
-    for line in fileInput:
-        listOfIds.append(findRow(line.strip()) * 8 + findColumn(line.strip()))
-
-    return listOfIds
+        return listOfIds
 
 
 def findMySeat(listOfSeatIds):

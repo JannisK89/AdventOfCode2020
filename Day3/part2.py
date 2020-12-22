@@ -2,21 +2,21 @@
 # https://adventofcode.com/2020/day/3
 
 
-def countTrees(file, xAcc, yAcc):
-    
-    map = open(file, 'r').readlines()
-    trees = 0
-    xPos = 0
+def countTrees(inputFile, xAcc, yAcc):
+    with open(inputFile, 'r') as file:
+        map = file.readlines()
+        trees = 0
+        xPos = 0
 
-    for line in range(yAcc, len(map), yAcc):
-        lineStripped = map[line].replace('\n', '')
-        xPos += xAcc
+        for line in range(yAcc, len(map), yAcc):
+            lineStripped = map[line].replace('\n', '')
+            xPos += xAcc
 
-        if lineStripped[xPos] == '#' :
-            trees += 1
+            if lineStripped[xPos] == '#':
+                trees += 1
 
-        if xPos + xAcc >= len(lineStripped):
-            xPos -=  len(lineStripped)
+            if xPos + xAcc >= len(lineStripped):
+                xPos -= len(lineStripped)
 
     return trees
 
@@ -28,5 +28,6 @@ def calculateTotal(slopes):
 
     return total
 
-slopes = [(1,1), (3,1), (5,1), (7,1), (1,2)]
+
+slopes = [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)]
 print(calculateTotal(slopes))

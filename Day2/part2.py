@@ -17,9 +17,10 @@ def validatePassword(inputLine):
     return False
 
 
-def findValidPasswords(file):
-    ValidPasswords = 0
-    passwords = open(file, 'r').readlines()
+def findValidPasswords(inputFile):
+    with open(inputFile, 'r') as file:
+            ValidPasswords = 0
+            passwords = file.readlines()
 
     for password in passwords:
         if validatePassword(password):
